@@ -6,13 +6,6 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-import { Button } from "@/Components/ui/button";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
@@ -29,71 +22,16 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <div className="w-full min-h-screen flex items-center justify-center">
-            <Card className="max-w-md w-full p-4 shadow-lg">
-                <Head title="Log in" />
+        <GuestLayout>
+            <Head title="Log in" />
 
-                <CardHeader>
-                    <CardTitle>Log In</CardTitle>
-                </CardHeader>
+            {status && (
+                <div className="mb-4 text-sm font-medium text-green-600">
+                    {status}
+                </div>
+            )}
 
-                {status && (
-                    <div className="mb-4 text-sm font-medium text-green-600">
-                        {status}
-                    </div>
-                )}
-                <CardContent>
-                    <form onSubmit={submit} className="space-y-4">
-                        <div>
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full"
-                                autoComplete="username"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                                // required
-                            />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
-                        </div>
-                        <Button type="submit" className="w-full">
-                            Submit
-                        </Button>
-                    </form>
-                </CardContent>
-                {/* 
-            <Card className="max-w-md mx-auto p-4 shadow-lg">
-                <CardHeader>
-                    <CardTitle>Contact Us</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form className="space-y-4">
-                        <div>
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                                id="name"
-                                name="name"
-                                // value={formData.name}
-                                // onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <Button type="submit" className="w-full">
-                            Submit
-                        </Button>
-                    </form>
-                </CardContent>
-            </Card> */}
-
-                {/* <form onSubmit={submit}>
+            <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -154,15 +92,9 @@ export default function Login({ status, canResetPassword }) {
 
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Log in
-                    </PrimaryButton> 
-                    <div>
-                        <Button className="ms-4" disabled={processing}>
-                            Click me
-                        </Button>
-                    </div>
+                    </PrimaryButton>
                 </div>
-            </form> */}
-            </Card>
-        </div>
+            </form>
+        </GuestLayout>
     );
 }
