@@ -43,7 +43,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 )}
                 <CardContent>
-                    <form onSubmit={submit} className="space-y-4">
+                    <form onSubmit={submit}>
                         <div>
                             <Label htmlFor="email">Email</Label>
                             <Input
@@ -64,9 +64,31 @@ export default function Login({ status, canResetPassword }) {
                                 className="mt-2"
                             />
                         </div>
-                        <Button type="submit" className="w-full">
-                            Submit
-                        </Button>
+                        <div className="mt-4">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                name="password"
+                                value={data.password}
+                                className="mt-1 block w-full"
+                                autoComplete="username"
+                                isFocused={true}
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                                // required
+                            />
+                            <InputError
+                                message={errors.password}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div className="mt-4">
+                            <Button type="submit" className="w-full mt-6">
+                                Submit
+                            </Button>
+                        </div>
                     </form>
                 </CardContent>
                 {/* 
