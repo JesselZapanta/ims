@@ -1,24 +1,51 @@
 import InputError from "@/Components/InputError";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    // const { data, setData, post, processing, errors, reset } = useForm({
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    //     password_confirmation: "",
+    // });
+
+    // const submit = (e) => {
+    //     e.preventDefault();
+
+    //     post(route("register"), {
+    //         onFinish: () => reset("password", "password_confirmation"),
+    //     });
+    // };
+
+    const [data, setData] = useState({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
     });
 
-    const submit = (e) => {
-        e.preventDefault();
+    const [errors, setErrors] = useState(false);
+    const [processing, setProcessing] = useState(false);
 
-        post(route("register"), {
-            onFinish: () => reset("password", "password_confirmation"),
-        });
+    const submit = async (e) => {
+        e.preventDefault();
+        setProcessing(true);
+
+        try {
+            const res = await axios.post("register", data);
+            if (res.data.status === "register") {
+                router.visit("/login"); //change to dashboard controller
+            }
+        } catch (error) {
+            setErrors(error.response.data.errors);
+        } finally {
+            setProcessing(false);
+        }
     };
 
     return (
@@ -44,6 +71,27 @@ export default function Register() {
                                     </p>
                                 </div>
                                 <div>
+                                    <Label htmlFor="name">Name</Label>
+                                    <Input
+                                        id="name"
+                                        type="name"
+                                        name="name"
+                                        value={data.name}
+                                        className="mt-1 block w-full"
+                                        isFocused={true}
+                                        onChange={(e) =>
+                                            setData({
+                                                ...data,
+                                                name: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.name}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                <div>
                                     <Label htmlFor="email">Email</Label>
                                     <Input
                                         id="email"
@@ -54,9 +102,11 @@ export default function Register() {
                                         autoComplete="username"
                                         isFocused={true}
                                         onChange={(e) =>
-                                            setData("email", e.target.value)
+                                            setData({
+                                                ...data,
+                                                email: e.target.value,
+                                            })
                                         }
-                                        // required
                                     />
                                     <InputError
                                         message={errors.email}
@@ -78,9 +128,11 @@ export default function Register() {
                                         autoComplete="username"
                                         isFocused={true}
                                         onChange={(e) =>
-                                            setData("password", e.target.value)
+                                            setData({
+                                                ...data,
+                                                password: e.target.value,
+                                            })
                                         }
-                                        // required
                                     />
                                     <InputError
                                         message={errors.password}
@@ -99,12 +151,14 @@ export default function Register() {
                                         name="password_confirmation"
                                         value={data.password_confirmation}
                                         className="mt-1 block w-full"
-                                        autoComplete="username"
                                         isFocused={true}
                                         onChange={(e) =>
-                                            setData("password_confirmation", e.target.value)
+                                            setData({
+                                                ...data,
+                                                password_confirmation:
+                                                    e.target.value,
+                                            })
                                         }
-                                        // required
                                     />
                                     <InputError
                                         message={errors.password_confirmation}
@@ -119,7 +173,7 @@ export default function Register() {
                                     Register
                                 </Button>
                                 <div className="text-center text-sm">
-                                    Already have an account? 
+                                    Already have an account?
                                     <a
                                         href={route("login")}
                                         className="underline underline-offset-4"
