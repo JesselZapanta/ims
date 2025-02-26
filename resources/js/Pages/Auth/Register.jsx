@@ -5,23 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function Register() {
-    // const { data, setData, post, processing, errors, reset } = useForm({
-    //     name: "",
-    //     email: "",
-    //     password: "",
-    //     password_confirmation: "",
-    // });
-
-    // const submit = (e) => {
-    //     e.preventDefault();
-
-    //     post(route("register"), {
-    //         onFinish: () => reset("password", "password_confirmation"),
-    //     });
-    // };
-
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -170,7 +156,14 @@ export default function Register() {
                                     disabled={processing}
                                     className="w-full"
                                 >
-                                    Register
+                                    {processing ? (
+                                        <span className="flex items-center gap-2">
+                                            <Loader2 className="animate-spin" />
+                                            Please wait
+                                        </span>
+                                    ) : (
+                                        "Register"
+                                    )}
                                 </Button>
                                 <div className="text-center text-sm">
                                     Already have an account?

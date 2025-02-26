@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function Login({ status, canResetPassword }) {
     // const { data, setData, post, processing, errors, reset } = useForm({
@@ -128,8 +129,16 @@ export default function Login({ status, canResetPassword }) {
                                     disabled={processing}
                                     className="w-full"
                                 >
-                                    Login
+                                    {processing ? (
+                                        <span className="flex items-center gap-2">
+                                            <Loader2 className="animate-spin" />
+                                            Please wait
+                                        </span>
+                                    ) : (
+                                        "Login"
+                                    )}
                                 </Button>
+
                                 <div className="text-center text-sm">
                                     Don&apos;t have an account?{" "}
                                     <a
