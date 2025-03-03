@@ -20,6 +20,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/admin/user', [AdminUserController::class, 'index'])->name('admin.user');
+Route::get('/admin/user/getdata', [AdminUserController::class, 'getdata']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
