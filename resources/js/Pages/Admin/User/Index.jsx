@@ -67,15 +67,9 @@ function Index() {
                     </TableBody>
                 </Table>
             </div>
-            {/* <div>
-                {
-                    data.map((user) => (
-                        <li key={user.id}>{user.name}</li>
-                    ))
-                }
-            </div> */}
         </AuthenticatedLayout>
     );
 }
 
 export default Index;
+d
