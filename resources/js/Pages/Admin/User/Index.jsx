@@ -16,18 +16,31 @@ import {
 function Index() {
 
     const [data, setData] = useState([]);
-    const [processing, setProcessing] = useState(false); 
+    const [loading, setLoading] = useState(false); 
+
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(10);
+    const [sortField, setSortField] = useState("id");
+    const [sortOrder, setSortOrder] = useState("desc");
 
     const getdata = async () => {
-        setProcessing(true);
-        try{
-            const res = await axios.get("/admin/user/getdata");
+        setLoading(true);
 
-            setData(res.data);
+        const params = [
+            `page=${page}`,
+            `sortField=${sortField}`,
+            `sortOrder=${sortOrder}`,
+        ].join("&");
+
+        try{
+            const res = await axios.get(`/admin/user/getdata?${params}`);
+
+            setData(res.data.data);
+            setTotal(res.data.total);
         }catch(err){
             console.log(err)
         }finally{
-            setProcessing(false);
+            setLoading(false);
         }
     }
 
@@ -57,13 +70,19 @@ function Index() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((user) => (
-                            <TableRow key={user.id}>
-                                <TableCell>{user.id}</TableCell>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                            </TableRow>
-                        ))}
+                        {loading ? (
+                            <TableCell colSpan={4} className="text-center">
+                                Loading...
+                            </TableCell>
+                        ) : (
+                            data.map((user) => (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.id}</TableCell>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </div>
@@ -72,4 +91,3 @@ function Index() {
 }
 
 export default Index;
-d
