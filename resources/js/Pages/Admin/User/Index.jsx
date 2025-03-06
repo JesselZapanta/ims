@@ -11,6 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/Components/ui/button";
 
 
 function Index() {
@@ -19,7 +20,8 @@ function Index() {
     const [loading, setLoading] = useState(false); 
 
     const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(10);
+    const [page, setPage] = useState(1);
+    const [lastpage, setLastPage] = useState(1);
     const [sortField, setSortField] = useState("id");
     const [sortOrder, setSortOrder] = useState("desc");
 
@@ -37,6 +39,7 @@ function Index() {
 
             setData(res.data.data);
             setTotal(res.data.total);
+            setPage(res.data.current_page);
         }catch(err){
             console.log(err)
         }finally{
@@ -46,7 +49,7 @@ function Index() {
 
     useEffect(() =>{
         getdata();
-    }, [])
+    }, [page, sortField, sortOrder])
 
     console.log(data)
 
@@ -85,6 +88,32 @@ function Index() {
                         )}
                     </TableBody>
                 </Table>
+                {/* Pagination Controls */}
+                <div className="flex justify-between items-center mt-4">
+                    <Button
+                        onClick={() =>
+                            setPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        disabled={page === 1}
+                    >
+                        Previous
+                    </Button>
+
+                    <span>
+                        Page {page} of {lastpage}
+                    </span>
+
+                    <Button
+                        onClick={() =>
+                            setPage((prev) =>
+                                Math.min(prev + 1, lastpage)
+                            )
+                        }
+                        disabled={page === lastpage}
+                    >
+                        Next
+                    </Button>
+                </div>
             </div>
         </AuthenticatedLayout>
     );
