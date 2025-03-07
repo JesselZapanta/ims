@@ -5,13 +5,23 @@ import { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/Components/ui/button";
+
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+
 
 
 function Index() {
@@ -63,37 +73,38 @@ function Index() {
         >
             <Head title="User Management" />
             <div className="p-6 text-gray-900">
-                <div className="mb-4">List of users</div>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Email</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <TableCell colSpan={4} className="text-center">
-                                Loading...
-                            </TableCell>
-                        ) : (
-                            data.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell>{user.id}</TableCell>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                <div className="bg-gray-50 p-6 rounded-md">
+                    <div className="mb-4">List of users</div>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>ID</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {loading ? (
+                                <TableCell colSpan={4} className="text-center">
+                                    Loading...
+                                </TableCell>
+                            ) : (
+                                data.map((user) => (
+                                    <TableRow key={user.id}>
+                                        <TableCell>{user.id}</TableCell>
+                                        <TableCell>{user.name}</TableCell>
+                                        <TableCell>{user.email}</TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
                 {/* Pagination Controls */}
-                <div className="flex justify-between items-center mt-4">
+                <div className="flex justify-end gap-4 items-center mt-4">
                     <Button
-                        onClick={() =>
-                            setPage((prev) => Math.max(prev - 1, 1))
-                        }
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                         disabled={page === 1}
                     >
                         Previous
@@ -105,9 +116,7 @@ function Index() {
 
                     <Button
                         onClick={() =>
-                            setPage((prev) =>
-                                Math.min(prev + 1, lastpage)
-                            )
+                            setPage((prev) => Math.min(prev + 1, lastpage))
                         }
                         disabled={page === lastpage}
                     >
