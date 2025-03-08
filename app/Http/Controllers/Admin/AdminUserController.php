@@ -14,18 +14,14 @@ class AdminUserController extends Controller
         return inertia('Admin/User/Index');
     }
 
-   public function getdata(Request $request)
-{ 
-    $users = User::where('id', '!=', Auth::id())
-                ->orderBy($request->sortField, $request->sortOrder)
-                ->paginate(10);
-
-    return response()->json([
-        'data' => $users->items(),
-        'current_page' => $users->currentPage(),
-        'last_page' => $users->lastPage(), // Ensure last_page is returned
-        'total' => $users->total()
-    ]);
-}
-
+    public function getdata(Request $request)
+    { 
+        return User::where('id', '!=', Auth::id())
+                    ->where(function($query) use ($request) {
+                        $query->where('name', 'like', "{$request->search}%")
+                                ->orWhere('email', 'like', "{$request->search}%");
+                    })
+                    ->orderBy($request->sortField, $request->sortOrder)
+                    ->paginate(10);
+    }
 }
