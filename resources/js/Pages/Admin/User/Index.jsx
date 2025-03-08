@@ -12,24 +12,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/Components/ui/button";
 
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-
-
 
 function Index() {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false); 
 
-    const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [lastpage, setLastPage] = useState(1);
     const [sortField, setSortField] = useState("id");
@@ -48,8 +36,8 @@ function Index() {
             const res = await axios.get(`/admin/user/getdata?${params}`);
 
             setData(res.data.data);
-            setTotal(res.data.total);
             setPage(res.data.current_page);
+            setLastPage(res.data.last_page);
         }catch(err){
             console.log(err)
         }finally{
@@ -61,7 +49,7 @@ function Index() {
         getdata();
     }, [page, sortField, sortOrder])
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <AuthenticatedLayout
@@ -86,15 +74,26 @@ function Index() {
                         </TableHeader>
                         <TableBody>
                             {loading ? (
-                                <TableCell colSpan={4} className="text-center">
-                                    Loading...
-                                </TableCell>
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={4}
+                                        className="text-center"
+                                    >
+                                        Loading...
+                                    </TableCell>
+                                </TableRow>
                             ) : (
                                 data.map((user) => (
                                     <TableRow key={user.id}>
                                         <TableCell>{user.id}</TableCell>
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
+                                        <TableCell>
+                                            <div className="flex gap-2">
+                                                <Button>Edit</Button>
+                                                <Button>Delete</Button>
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}
@@ -103,25 +102,33 @@ function Index() {
                 </div>
                 {/* Pagination Controls */}
                 <div className="flex justify-end gap-4 items-center mt-4">
-                    <Button
-                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        disabled={page === 1}
-                    >
-                        Previous
-                    </Button>
+                    {!loading && (
+                        <>
+                            <Button
+                                onClick={() =>
+                                    setPage((prev) => Math.max(prev - 1, 1))
+                                }
+                                disabled={page === 1}
+                            >
+                                Previous
+                            </Button>
 
-                    <span>
-                        Page {page} of {lastpage}
-                    </span>
+                            <span>
+                                Page {page} of {lastpage}
+                            </span>
 
-                    <Button
-                        onClick={() =>
-                            setPage((prev) => Math.min(prev + 1, lastpage))
-                        }
-                        disabled={page === lastpage}
-                    >
-                        Next
-                    </Button>
+                            <Button
+                                onClick={() =>
+                                    setPage((prev) =>
+                                        Math.min(prev + 1, lastpage)
+                                    )
+                                }
+                                disabled={page === lastpage}
+                            >
+                                Next
+                            </Button>
+                        </>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

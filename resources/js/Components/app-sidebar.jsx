@@ -26,7 +26,7 @@ import { NavUser } from "./nav-user";
 const user = {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/images/ims.png",
 };
 
 const items = [
@@ -62,7 +62,7 @@ export function AppSidebar({ ...props }) {
         <Sidebar {...props}>
             <SidebarHeader>
                 <SidebarMenu>
-                    <SidebarMenuItem isActive>
+                    <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <a href="#">
                                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
