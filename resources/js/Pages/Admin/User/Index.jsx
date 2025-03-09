@@ -20,8 +20,20 @@ import {
     CirclePlus,
     Search,
 } from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
+
 import { Skeleton } from "@/Components/ui/skeleton";
 import { Input } from "@/Components/ui/input";
+import { Label } from "@/components/ui/label";
+import InputError from "@/Components/InputError";
 
 export default function Index() {
     const [data, setData] = useState([]);
@@ -34,6 +46,7 @@ export default function Index() {
 
     const [search, setSearch] = useState("");
 
+    //fetching data = users
     const getdata = async () => {
         setLoading(true);
 
@@ -63,6 +76,24 @@ export default function Index() {
 
     // console.log(data)
 
+    //creating new data = user
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+    });
+
+    const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+
+    const formCancel = () => {
+        setIsOpen(false);
+    }
+
     return (
         <AuthenticatedLayout
             header={
@@ -75,6 +106,7 @@ export default function Index() {
             <div className="p-6 text-gray-900">
                 <div className="bg-gray-50 p-6 rounded-md">
                     <div className="mb-4">List of users</div>
+
                     <div className="mb-4 flex gap-2">
                         <Input
                             type="text"
@@ -86,7 +118,7 @@ export default function Index() {
                             <Search />
                             {/* Search */}
                         </Button>
-                        <Button>
+                        <Button onClick={() => setIsOpen(true)}>
                             <CirclePlus />
                             New
                         </Button>
@@ -175,6 +207,107 @@ export default function Index() {
                         <ChevronRight />
                     </Button>
                 </div>
+
+                {/* form dialog */}
+
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Edit profile</DialogTitle>
+                            <DialogDescription>
+                                Make changes to your profile here. Click save
+                                when you're done.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div>
+                            <Label for="name">Name</Label>
+                            <Input
+                                name="name"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={formData.name}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        name: e.target.value,
+                                    })
+                                }
+                            />
+                            <InputError
+                                message={errors.name}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div>
+                            <Label for="email">Email</Label>
+                            <Input
+                                name="email"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={formData.email}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        email: e.target.value,
+                                    })
+                                }
+                            />
+                            <InputError
+                                message={errors.email}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div>
+                            <Label for="password">Password</Label>
+                            <Input
+                                name="password"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={formData.password}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password: e.target.value,
+                                    })
+                                }
+                            />
+                            <InputError
+                                message={errors.password}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div>
+                            <Label for="password_confirmation">
+                                Re-type Password
+                            </Label>
+                            <Input
+                                name="password_confirmation"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={formData.password_confirmation}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password_confirmation: e.target.value,
+                                    })
+                                }
+                            />
+                            <InputError
+                                message={errors.password_confirmation}
+                                className="mt-2"
+                            />
+                        </div>
+                        <DialogFooter>
+                            <Button
+                                variant="secondary"
+                                onClick={formCancel}
+                            >
+                                Cancel
+                            </Button>
+                            <Button type="submit">Create</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </AuthenticatedLayout>
     );
