@@ -16,12 +16,16 @@ class AdminUserController extends Controller
 
     public function getdata(Request $request)
     { 
-        return User::where('id', '!=', Auth::id())
+        return User::where('id', '!=', Auth::user()->id)
                     ->where(function($query) use ($request) {
                         $query->where('name', 'like', "{$request->search}%")
                                 ->orWhere('email', 'like', "{$request->search}%");
                     })
                     ->orderBy($request->sortField, $request->sortOrder)
                     ->paginate(10);
+    }
+
+    public function store(Request $request){
+        return $request;
     }
 }

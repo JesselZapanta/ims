@@ -87,11 +87,54 @@ export default function Index() {
         password_confirmation: "",
     });
 
+    const [user, setUser] = useState(false);
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+    const creteForm = () => {
+        setIsOpen(true)
+    }
+
+    const editForm = (user) => {
+        setIsOpen(true);
+        setUser(user)
+
+        setFormData({
+            name: user.name,
+            email: user.email,
+        })
+    };
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        setProcessing(true);
+        
+        if(user){
+            alert("User edited successfully");
+        }else{
+            try {
+                const res = await axios.post("/admin/user/store", formData);
+
+                if (res.data.status === 200) {
+                    alert("User created successfully");
+                }
+            } catch (err) {
+                setErrors(err.data.errors);
+            } finally {
+                setProcessing(false);
+            }
+        }
+    };
+
     const formCancel = () => {
         setIsOpen(false);
+        setUser(false);
+        setFormData({
+            name: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+        });
     }
 
     return (
@@ -118,7 +161,7 @@ export default function Index() {
                             <Search />
                             {/* Search */}
                         </Button>
-                        <Button onClick={() => setIsOpen(true)}>
+                        <Button onClick={creteForm}>
                             <CirclePlus />
                             New
                         </Button>
@@ -164,6 +207,7 @@ export default function Index() {
                                                 <Button
                                                     variant="outline"
                                                     size="icon"
+                                                    onClick={() => editForm(user)}
                                                 >
                                                     <Pencil />
                                                 </Button>
@@ -210,102 +254,108 @@ export default function Index() {
 
                 {/* form dialog */}
 
-                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <Dialog open={isOpen} onOpenChange={formCancel}>
                     <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle>Edit profile</DialogTitle>
-                            <DialogDescription>
-                                Make changes to your profile here. Click save
-                                when you're done.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div>
-                            <Label for="name">Name</Label>
-                            <Input
-                                name="name"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={formData.name}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        name: e.target.value,
-                                    })
-                                }
-                            />
-                            <InputError
-                                message={errors.name}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <Label for="email">Email</Label>
-                            <Input
-                                name="email"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={formData.email}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        email: e.target.value,
-                                    })
-                                }
-                            />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <Label for="password">Password</Label>
-                            <Input
-                                name="password"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={formData.password}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        password: e.target.value,
-                                    })
-                                }
-                            />
-                            <InputError
-                                message={errors.password}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <Label for="password_confirmation">
-                                Re-type Password
-                            </Label>
-                            <Input
-                                name="password_confirmation"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={formData.password_confirmation}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        password_confirmation: e.target.value,
-                                    })
-                                }
-                            />
-                            <InputError
-                                message={errors.password_confirmation}
-                                className="mt-2"
-                            />
-                        </div>
-                        <DialogFooter>
-                            <Button
-                                variant="secondary"
-                                onClick={formCancel}
-                            >
-                                Cancel
-                            </Button>
-                            <Button type="submit">Create</Button>
-                        </DialogFooter>
+                        <form onSubmit={onSubmit}>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    {user ? "Update User" : "Add User"}
+                                </DialogTitle>
+                                <DialogDescription>
+                                    {user
+                                        ? "Modify the user details and save the changes."
+                                        : "Enter the required details to create a new user."}
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div>
+                                <Label htmlFor="name">Name</Label>
+                                <Input
+                                    name="name"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    value={formData.name}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            name: e.target.value,
+                                        })
+                                    }
+                                />
+                                <InputError
+                                    message={errors.name}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    name="email"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    value={formData.email}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            email: e.target.value,
+                                        })
+                                    }
+                                />
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="password">Password</Label>
+                                <Input
+                                    name="password"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    value={formData.password}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            password: e.target.value,
+                                        })
+                                    }
+                                />
+                                <InputError
+                                    message={errors.password}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="password_confirmation">
+                                    Re-type Password
+                                </Label>
+                                <Input
+                                    name="password_confirmation"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    value={formData.password_confirmation}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            password_confirmation:
+                                                e.target.value,
+                                        })
+                                    }
+                                />
+                                <InputError
+                                    message={errors.password_confirmation}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <DialogFooter className="mt-4">
+                                <Button
+                                    variant="secondary"
+                                    onClick={formCancel}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button type="submit">{user ? "Update" : "Create"}</Button>
+                            </DialogFooter>
+                        </form>
                     </DialogContent>
                 </Dialog>
             </div>
