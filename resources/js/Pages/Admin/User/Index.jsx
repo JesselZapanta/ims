@@ -111,7 +111,18 @@ export default function Index() {
         setProcessing(true);
         
         if(user){
-            alert("User edited successfully");
+            try{
+                const res = await axios.put(`/admin/user/update/${user.id}`, formData);
+
+                if(res.data.status === 'updated'){
+                    formCancel();
+                    alert("user updated successfully.")
+                } 
+            } catch(err){
+                setErrors(err.response.data.errors)
+            }finally{
+            setProcessing(false);
+            }
         }else{
             try {
                 const res = await axios.post("/admin/user/store", formData);
