@@ -91,6 +91,7 @@ export default function Index() {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+
     const creteForm = () => {
         setIsOpen(true)
     }
@@ -115,11 +116,16 @@ export default function Index() {
             try {
                 const res = await axios.post("/admin/user/store", formData);
 
-                if (res.data.status === 200) {
-                    alert("User created successfully");
+                if (res.data.status === "created") {
+                    formCancel();
+                    // alert("User created successfully");
+                    toast({
+                        title: "Created",
+                        description: "User created successfully",
+                    });
                 }
             } catch (err) {
-                setErrors(err.data.errors);
+                setErrors(err.response.data.errors);
             } finally {
                 setProcessing(false);
             }
@@ -129,12 +135,14 @@ export default function Index() {
     const formCancel = () => {
         setIsOpen(false);
         setUser(false);
+        setErrors({});
         setFormData({
             name: "",
             email: "",
             password: "",
             password_confirmation: "",
         });
+        getdata();
     }
 
     return (
