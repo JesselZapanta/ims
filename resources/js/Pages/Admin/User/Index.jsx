@@ -91,39 +91,42 @@ export default function Index() {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
-
     const creteForm = () => {
-        setIsOpen(true)
-    }
+        setErrors({});
+        setIsOpen(true);
+    };
 
     const editForm = (user) => {
+        setErrors({});
         setIsOpen(true);
-        setUser(user)
+        setUser(user);
 
         setFormData({
             name: user.name,
             email: user.email,
-        })
+        });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-        
-        if(user){
-            try{
-                const res = await axios.put(`/admin/user/update/${user.id}`, formData);
+        if (user) {
+            try {
+                const res = await axios.put(
+                    `/admin/user/update/${user.id}`,
+                    formData
+                );
 
-                if(res.data.status === 'updated'){
+                if (res.data.status === "updated") {
                     formCancel();
-                    alert("user updated successfully.")
-                } 
-            } catch(err){
-                setErrors(err.response.data.errors)
-            }finally{
-            setProcessing(false);
+                    alert("user updated successfully.");
+                }
+            } catch (err) {
+                setErrors(err.response.data.errors);
+            } finally {
+                setProcessing(false);
             }
-        }else{
+        } else {
             try {
                 const res = await axios.post("/admin/user/store", formData);
 
@@ -145,6 +148,7 @@ export default function Index() {
 
     const formCancel = () => {
         setIsOpen(false);
+        setIsDelete(false);
         setUser(false);
         setErrors({});
         setFormData({
@@ -154,7 +158,32 @@ export default function Index() {
             password_confirmation: "",
         });
         getdata();
-    }
+    };
+
+    //delete data = user
+
+    const [isDelete, setIsDelete] = useState(false);
+
+    const deleteConfirm = (user) => {
+        setUser(user);
+        setIsDelete(true);
+    };
+
+    const destroy = async (user) => {
+        setProcessing(true);
+        try {
+            const res = await axios.delete(`/admin/user/destroy/${user.id}`);
+
+            if (res.data.status === "deleted") {
+                formCancel();
+                alert("User deleted successfully");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -226,13 +255,18 @@ export default function Index() {
                                                 <Button
                                                     variant="outline"
                                                     size="icon"
-                                                    onClick={() => editForm(user)}
+                                                    onClick={() =>
+                                                        editForm(user)
+                                                    }
                                                 >
                                                     <Pencil />
                                                 </Button>
                                                 <Button
                                                     size="icon"
                                                     variant="destructive"
+                                                    onClick={() =>
+                                                        deleteConfirm(user)
+                                                    }
                                                 >
                                                     <Trash2 />
                                                 </Button>
@@ -372,9 +406,35 @@ export default function Index() {
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit">{user ? "Update" : "Create"}</Button>
+                                <Button type="submit">
+                                    {user ? "Update" : "Create"}
+                                </Button>
                             </DialogFooter>
                         </form>
+                    </DialogContent>
+                </Dialog>
+
+                {/* delete */}
+
+                <Dialog open={isDelete} onOpenChange={formCancel}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Delete User?</DialogTitle>
+                            <DialogDescription>
+                                Confirm to permanently delete this user?
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="mt-4">
+                            <Button variant="secondary" onClick={formCancel}>
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                onClick={() => destroy(user)}
+                            >
+                                Delete
+                            </Button>
+                        </DialogFooter>
                     </DialogContent>
                 </Dialog>
             </div>

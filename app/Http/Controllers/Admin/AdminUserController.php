@@ -54,4 +54,14 @@ class AdminUserController extends Controller
             'status' => 'updated'
         ], 200);
     }
+
+    public function destroy($id){
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return response()->json([
+            'status' => 'deleted'
+        ], 200);
+    }
 }
