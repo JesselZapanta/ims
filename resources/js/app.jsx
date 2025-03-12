@@ -7,6 +7,8 @@ import { createRoot } from 'react-dom/client';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+import { Toaster } from "@/components/ui/toaster"; 
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
@@ -17,9 +19,14 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <>
+                <App {...props} />
+                <Toaster />
+            </>
+        );
     },
     progress: {
         color: '#4B5563',
     },
-});
+}); 

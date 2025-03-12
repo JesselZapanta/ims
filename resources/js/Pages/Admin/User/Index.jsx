@@ -35,6 +35,8 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/components/ui/label";
 import InputError from "@/Components/InputError";
 
+import { toast } from "sonner";
+
 export default function Index() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -91,7 +93,7 @@ export default function Index() {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
-    const creteForm = () => {
+    const createForm = () => {
         setErrors({});
         setIsOpen(true);
     };
@@ -119,7 +121,8 @@ export default function Index() {
 
                 if (res.data.status === "updated") {
                     formCancel();
-                    alert("user updated successfully.");
+                    toast.success("The user details have been successfully updated.");
+
                 }
             } catch (err) {
                 setErrors(err.response.data.errors);
@@ -132,11 +135,7 @@ export default function Index() {
 
                 if (res.data.status === "created") {
                     formCancel();
-                    // alert("User created successfully");
-                    toast({
-                        title: "Created",
-                        description: "User created successfully",
-                    });
+                    toast.success("The user has been successfully added.");
                 }
             } catch (err) {
                 setErrors(err.response.data.errors);
@@ -209,7 +208,7 @@ export default function Index() {
                             <Search />
                             {/* Search */}
                         </Button>
-                        <Button onClick={creteForm}>
+                        <Button onClick={createForm}>
                             <CirclePlus />
                             New
                         </Button>
@@ -244,7 +243,7 @@ export default function Index() {
                                         {/* <Loader2 className="animate-spin" /> */}
                                     </TableCell>
                                 </TableRow>
-                            ) : (
+                            ) : data.length > 0 ? (
                                 data.map((user) => (
                                     <TableRow key={user.id}>
                                         <TableCell>{user.id}</TableCell>
@@ -274,6 +273,12 @@ export default function Index() {
                                         </TableCell>
                                     </TableRow>
                                 ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan="4" className="py-12 text-center">
+                                        No data found
+                                    </TableCell>
+                                </TableRow>
                             )}
                         </TableBody>
                     </Table>
