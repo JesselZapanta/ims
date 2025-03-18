@@ -7,6 +7,7 @@ import {
     Search,
     Settings,
     User,
+    ArrowUpNarrowWide,
 } from "lucide-react";
 
 import {
@@ -41,9 +42,9 @@ const items = [
         icon: User,
     },
     {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
+        title: "Supplier",
+        url: "/admin/supplier/index",
+        icon: ArrowUpNarrowWide,
     },
     {
         title: "Search",

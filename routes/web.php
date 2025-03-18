@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -24,6 +25,8 @@ Route::get('/admin/user/getdata', [AdminUserController::class, 'getdata']);
 Route::post('/admin/user/store', [AdminUserController::class, 'store']);
 Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
 Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']);
+
+Route::get('/admin/supplier/index',[AdminSupplierController::class, 'index'])->name('admin.supplier');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

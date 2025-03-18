@@ -176,7 +176,7 @@ export default function Index() {
 
             if (res.data.status === "deleted") {
                 formCancel();
-                alert("User deleted successfully");
+                toast.success("User deleted successfully.");
             }
         } catch (err) {
             console.log(err);
