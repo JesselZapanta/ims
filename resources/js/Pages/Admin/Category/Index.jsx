@@ -3,7 +3,7 @@ import React from 'react'
 
 function Index() {
   return (
-    <AuthenticatedLayout>Supplier</AuthenticatedLayout>
+    <AuthenticatedLayout>Category</AuthenticatedLayout>
   )
 }
 

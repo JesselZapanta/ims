@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,8 @@ Route::put('/admin/user/update/{id}', [AdminUserController::class, 'update']);
 Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']);
 
 Route::get('/admin/supplier/index',[AdminSupplierController::class, 'index'])->name('admin.supplier');
+
+Route::get('/admin/category/index',[AdminCategoryController::class, 'index'])->name('admin.category');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

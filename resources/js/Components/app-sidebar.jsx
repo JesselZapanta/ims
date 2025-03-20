@@ -47,8 +47,8 @@ const items = [
         icon: ArrowUpNarrowWide,
     },
     {
-        title: "Search",
-        url: "#",
+        title: "Categories",
+        url: "/admin/category/index",
         icon: Search,
     },
     {
