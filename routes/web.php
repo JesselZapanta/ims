@@ -29,8 +29,12 @@ Route::delete('/admin/user/destroy/{id}',[AdminUserController::class, 'destroy']
 
 Route::get('/admin/supplier/index',[AdminSupplierController::class, 'index'])->name('admin.supplier');
 Route::get('/admin/supplier/getdata',[AdminSupplierController::class, 'getdata']);
+Route::post('/admin/supplier/store', [AdminSupplierController::class, 'store']);
+Route::put('/admin/supplier/update/{id}', [AdminSupplierController::class, 'update']);
+Route::delete('/admin/supplier/destroy/{id}',[AdminSupplierController::class, 'destroy']);
 
 Route::get('/admin/category/index',[AdminCategoryController::class, 'index'])->name('admin.category');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

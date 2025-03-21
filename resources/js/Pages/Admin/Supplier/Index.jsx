@@ -230,7 +230,7 @@ export default function Index() {
                             {loading ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={4}
+                                        colSpan={5}
                                         className="text-center"
                                     >
                                         <div className="flex flex-col gap-2">
@@ -361,7 +361,7 @@ export default function Index() {
                                 />
                             </div>
                             <div className="mt-4">
-                                <Label htmlFor="contact">Contact</Label>
+                                <Label htmlFor="name">Contact</Label>
                                 <Input
                                     name="contact"
                                     type="text"
