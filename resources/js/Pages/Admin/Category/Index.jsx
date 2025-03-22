@@ -247,11 +247,7 @@ export default function Index() {
                                         <TableCell>{category.id}</TableCell>
                                         <TableCell>{category.name}</TableCell>
                                         <TableCell>
-                                            {category.contact}
-                                        </TableCell>
-                                        <TableCell>{category.email}</TableCell>
-                                        <TableCell>
-                                            {category.address}
+                                            {category.description}
                                         </TableCell>
                                         <TableCell className="flex justify-end">
                                             <div className="flex gap-2">
