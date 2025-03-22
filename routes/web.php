@@ -34,6 +34,10 @@ Route::put('/admin/supplier/update/{id}', [AdminSupplierController::class, 'upda
 Route::delete('/admin/supplier/destroy/{id}',[AdminSupplierController::class, 'destroy']);
 
 Route::get('/admin/category/index',[AdminCategoryController::class, 'index'])->name('admin.category');
+Route::get('/admin/category/getdata',[AdminCategoryController::class, 'getdata']);
+Route::post('/admin/category/store', [AdminCategoryController::class, 'store']);
+Route::put('/admin/category/update/{id}', [AdminCategoryController::class, 'update']);
+Route::delete('/admin/category/destroy/{id}',[AdminCategoryController::class, 'destroy']);
 
 
 Route::middleware('auth')->group(function () {
