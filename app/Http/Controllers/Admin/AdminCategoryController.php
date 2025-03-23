@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminCategoryStoreRequest;
+use App\Http\Requests\Admin\AdminCategoryUpdateRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -20,17 +22,36 @@ class AdminCategoryController extends Controller
                         ->paginate(10);
     }
 
-    public function store()
+    public function store(AdminCategoryStoreRequest $request)
     {
+        $data = $request->validated();
 
+        Category::create($data);
+
+        return response()->json([
+            'status' => 'created'
+        ],200);
     }
 
-    public function update()
+    public function update(AdminCategoryUpdateRequest $request, $id)
     {
+        $category = Category::findOrFail($id);
+        $data = $request->validated();
 
-    }
+        $category->update($data);
 
-    public function destroy(){
+        return response()->json([
+            'status' => 'updated'
+        ],200);
+    }   
 
+    public function destroy($id){
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return response()->json([
+            'status' => 'deleted'
+        ],200);
     }
 }
