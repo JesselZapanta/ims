@@ -8,6 +8,7 @@ import {
     Settings,
     User,
     ArrowUpNarrowWide,
+    ShoppingCart,
 } from "lucide-react";
 
 import {
@@ -52,9 +53,9 @@ const items = [
         icon: Search,
     },
     {
-        title: "Settings",
+        title: "Products",
         url: "#",
-        icon: Settings,
+        icon: ShoppingCart,
     },
 ];
 
