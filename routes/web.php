@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +40,9 @@ Route::post('/admin/category/store', [AdminCategoryController::class, 'store']);
 Route::put('/admin/category/update/{id}', [AdminCategoryController::class, 'update']);
 Route::delete('/admin/category/destroy/{id}',[AdminCategoryController::class, 'destroy']);
 
+Route::get('/admin/product/index',[AdminProductController::class, 'index'])->name('admin.product');
+Route::get('/admin/product/getdata',[AdminProductController::class, 'getdata']);
+Route::post('/admin/product/store', [AdminProductController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

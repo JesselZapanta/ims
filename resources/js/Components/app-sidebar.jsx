@@ -54,7 +54,7 @@ const items = [
     },
     {
         title: "Products",
-        url: "#",
+        url: "/admin/product/index",
         icon: ShoppingCart,
     },
 ];
