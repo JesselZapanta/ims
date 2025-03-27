@@ -22,7 +22,15 @@ class AdminProductStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'supplier_id' => ['required', 'exists:suppliers,id'],
+            'description' => ['required', 'string'],
+            'purchase_price' => ['required', 'integer'],
+            'selling_price' => ['required', 'integer'],
+            'expiry_date' => ['required', 'date'],
+            'status' => ['required', 'integer', 'in:1,2,3'],
+            'image' => ['nullable', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

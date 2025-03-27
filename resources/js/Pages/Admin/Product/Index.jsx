@@ -88,7 +88,7 @@ export default function Index() {
         getdata();
     }, [page, sortField, sortOrder]);
 
-    // console.log(data)
+    console.log(data);
 
     //creating new data = product
 
@@ -123,7 +123,12 @@ export default function Index() {
         setFormData({
             name: product.name,
             category_id: product.category_id,
-            image: product.image,
+            supplier_id: product.supplier_id,
+            description: product.description,
+            purchase_price: product.purchase_price,
+            selling_price: product.selling_price,
+            expiry_date: product.expiry_date,
+            status: product.status,
         });
     };
 
@@ -173,8 +178,14 @@ export default function Index() {
         setErrors({});
         setFormData({
             name: "",
-            category_id: "",
-            image: "",
+            category_id: null,
+            supplier_id: null,
+            description: "",
+            purchase_price: 0,
+            selling_price: 0,
+            expiry_date: null,
+            status: "",
+            image: null,
         });
         getdata();
     };
@@ -214,6 +225,9 @@ export default function Index() {
                 </h2>
             }
         >
+            <pre className="text-gray-900">
+                {JSON.stringify(data.data, null, 2)}
+            </pre>
             <Head title="Product Management" />
             <div className="p-6 text-gray-900">
                 <div className="bg-gray-50 p-6 rounded-md">
@@ -240,9 +254,6 @@ export default function Index() {
                             <TableRow>
                                 <TableHead>ID</TableHead>
                                 <TableHead>Name</TableHead>
-                                <TableHead>Contact</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Address</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -256,25 +267,15 @@ export default function Index() {
                                             <Skeleton className="h-11 w-full" />
                                             <Skeleton className="h-11 w-full" />
                                             <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
-                                            <Skeleton className="h-11 w-full" />
                                         </div>
                                         {/* <Loader2 className="animate-spin" /> */}
                                     </TableCell>
                                 </TableRow>
                             ) : data.length > 0 ? (
-                                data.map((product) => (
+                                data.data.map((product) => (
                                     <TableRow key={product.id}>
                                         <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.name}</TableCell>
-                                        <TableCell>{product.contact}</TableCell>
-                                        <TableCell>{product.email}</TableCell>
-                                        <TableCell>{product.address}</TableCell>
                                         <TableCell className="flex justify-end">
                                             <div className="flex gap-2">
                                                 <Button
@@ -493,24 +494,58 @@ export default function Index() {
                                     />
                                 </div>
                             </div>
-                            <div className="mt-4">
-                                <Label htmlFor="name">Expiry Date</Label>
-                                <Input
-                                    name="expiry_date"
-                                    type="date"
-                                    className="mt-1 block w-full"
-                                    value={formData.expiry_date}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            expiry_date: e.target.value,
-                                        })
-                                    }
-                                />
-                                <InputError
-                                    message={errors.expiry_date}
-                                    className="mt-2"
-                                />
+                            <div className="flex gap-4">
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="name">Expiry Date</Label>
+                                    <Input
+                                        name="expiry_date"
+                                        type="date"
+                                        className="mt-1 block w-full"
+                                        value={formData.expiry_date}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                expiry_date: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.expiry_date}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="status">Status</Label>
+                                    <Select
+                                        name="status"
+                                        onValueChange={(value) =>
+                                            setFormData({
+                                                ...formData,
+                                                status: value,
+                                            })
+                                        }
+                                        value={formData.status}
+                                    >
+                                        <SelectTrigger className="mt-1 block w-full">
+                                            <SelectValue placeholder="Select Status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1">
+                                                In Stock
+                                            </SelectItem>
+                                            <SelectItem value="2">
+                                                Out of Stock
+                                            </SelectItem>
+                                            <SelectItem value="3">
+                                                Discontinued
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError
+                                        message={errors.supplier_id}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
                             <div className="mt-4">
                                 <Label htmlFor="image">Product Image</Label>

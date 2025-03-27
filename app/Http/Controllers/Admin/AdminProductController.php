@@ -37,16 +37,11 @@ class AdminProductController extends Controller
     {
         $data = $request->validated();
 
-        return $data;
-
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');
-            return 'uploaded';
         }
 
-        // return $data;
-
-        // Product::create($data);
+        Product::create($data);
 
         return response()->json([
             'status' => 'created'
