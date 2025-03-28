@@ -17,6 +17,8 @@ return new class extends Migration
         $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
         $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
         $table->text('description')->nullable();
+        $table->tinyText('unit');
+        $table->integer('quantity');
         $table->decimal('purchase_price', 10, 2);
         $table->decimal('selling_price', 10, 2);
         $table->date('expiry_date')->nullable();

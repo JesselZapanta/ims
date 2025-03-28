@@ -26,6 +26,8 @@ class AdminProductStoreRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'supplier_id' => ['required', 'exists:suppliers,id'],
             'description' => ['required', 'string'],
+            'unit' => ['required', 'string'],
+            'quantity' => ['required', 'integer'],
             'purchase_price' => ['required', 'integer'],
             'selling_price' => ['required', 'integer'],
             'expiry_date' => ['required', 'date'],

@@ -19,6 +19,7 @@ class AdminProductController extends Controller
     public function getdata(Request $request)
     {
         $products =  Product::where('name', 'like' , "{$request->search}%")
+                        ->with('category')
                         ->orderBy($request->sortField, $request->sortOrder)
                         ->paginate(10);
 

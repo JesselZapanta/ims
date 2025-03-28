@@ -191,9 +191,9 @@ export default function Index() {
             }
         >
             <Head title="Category Management" />
-            <pre className="text-gray-900">
+            {/* <pre className="text-gray-900">
                 {JSON.stringify(data, null, 2)}
-            </pre>
+            </pre> */}
             <div className="p-6 text-gray-900">
                 <div className="bg-gray-50 p-6 rounded-md">
                     <div className="mb-4">List of categories</div>

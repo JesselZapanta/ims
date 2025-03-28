@@ -88,7 +88,7 @@ export default function Index() {
         getdata();
     }, [page, sortField, sortOrder]);
 
-    console.log(data);
+    // console.log(data);
 
     //creating new data = product
 
@@ -96,12 +96,14 @@ export default function Index() {
 
     const [formData, setFormData] = useState({
         name: "",
-        category_id: null,
-        supplier_id: null,
+        category_id: "",
+        supplier_id: "",
         description: "",
+        unit: "",
+        quantity: 0,
         purchase_price: 0,
         selling_price: 0,
-        expiry_date: null,
+        expiry_date: "",
         status: "",
         image: null,
     });
@@ -125,6 +127,8 @@ export default function Index() {
             category_id: product.category_id,
             supplier_id: product.supplier_id,
             description: product.description,
+            unit: product.unit,
+            quantity: product.quantity,
             purchase_price: product.purchase_price,
             selling_price: product.selling_price,
             expiry_date: product.expiry_date,
@@ -178,12 +182,14 @@ export default function Index() {
         setErrors({});
         setFormData({
             name: "",
-            category_id: null,
-            supplier_id: null,
+            category_id: "",
+            supplier_id: "",
             description: "",
+            unit: "",
+            quantity: 0,
             purchase_price: 0,
             selling_price: 0,
-            expiry_date: null,
+            expiry_date: "",
             status: "",
             image: null,
         });
@@ -225,9 +231,9 @@ export default function Index() {
                 </h2>
             }
         >
-            <pre className="text-gray-900">
+            {/* <pre className="text-gray-900">
                 {JSON.stringify(data.data, null, 2)}
-            </pre>
+            </pre> */}
             <Head title="Product Management" />
             <div className="p-6 text-gray-900">
                 <div className="bg-gray-50 p-6 rounded-md">
@@ -254,6 +260,8 @@ export default function Index() {
                             <TableRow>
                                 <TableHead>ID</TableHead>
                                 <TableHead>Name</TableHead>
+                                <TableHead>Category</TableHead>
+                                <TableHead>Status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -271,11 +279,23 @@ export default function Index() {
                                         {/* <Loader2 className="animate-spin" /> */}
                                     </TableCell>
                                 </TableRow>
-                            ) : data.length > 0 ? (
+                            ) : data?.data?.length > 0 ? (
                                 data.data.map((product) => (
                                     <TableRow key={product.id}>
                                         <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.name}</TableCell>
+                                        <TableCell>
+                                            {product.category.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {product.status === 1 ? (
+                                                <div>In Stock</div>
+                                            ) : product.status === 2 ? (
+                                                <div>Out of Stock</div>
+                                            ) : (
+                                                <div>Discontinued</div>
+                                            )}
+                                        </TableCell>
                                         <TableCell className="flex justify-end">
                                             <div className="flex gap-2">
                                                 <Button
@@ -343,7 +363,7 @@ export default function Index() {
                 {/* form dialog */}
 
                 <Dialog open={isOpen} onOpenChange={formCancel}>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="sm:max-w-[625px]">
                         <form onSubmit={onSubmit}>
                             <DialogHeader>
                                 <DialogTitle>
@@ -374,67 +394,73 @@ export default function Index() {
                                     className="mt-2"
                                 />
                             </div>
-                            <div className="mt-4">
-                                <Label htmlFor="category_id">Category</Label>
-                                <Select
-                                    name="category_id"
-                                    onValueChange={(value) =>
-                                        setFormData({
-                                            ...formData,
-                                            category_id: String(value),
-                                        })
-                                    }
-                                    value={formData.category_id}
-                                >
-                                    <SelectTrigger className="mt-1 block w-full">
-                                        <SelectValue placeholder="Select a Category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((category) => (
-                                            <SelectItem
-                                                key={category.id}
-                                                value={String(category.id)}
-                                            >
-                                                {category.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <InputError
-                                    message={errors.category_id}
-                                    className="mt-2"
-                                />
-                            </div>
-                            <div className="mt-4">
-                                <Label htmlFor="supplier_id">Supplier</Label>
-                                <Select
-                                    name="supplier_id"
-                                    onValueChange={(value) =>
-                                        setFormData({
-                                            ...formData,
-                                            supplier_id: String(value),
-                                        })
-                                    }
-                                    value={formData.supplier_id}
-                                >
-                                    <SelectTrigger className="mt-1 block w-full">
-                                        <SelectValue placeholder="Select a Supplier" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {suppliers.map((supplier) => (
-                                            <SelectItem
-                                                key={supplier.id}
-                                                value={String(supplier.id)}
-                                            >
-                                                {supplier.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <InputError
-                                    message={errors.supplier_id}
-                                    className="mt-2"
-                                />
+                            <div className="flex gap-4">
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="category_id">
+                                        Category
+                                    </Label>
+                                    <Select
+                                        name="category_id"
+                                        onValueChange={(value) =>
+                                            setFormData({
+                                                ...formData,
+                                                category_id: String(value),
+                                            })
+                                        }
+                                        value={formData.category_id}
+                                    >
+                                        <SelectTrigger className="mt-1 block w-full">
+                                            <SelectValue placeholder="Select a Category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.map((category) => (
+                                                <SelectItem
+                                                    key={category.id}
+                                                    value={String(category.id)}
+                                                >
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError
+                                        message={errors.category_id}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="supplier_id">
+                                        Supplier
+                                    </Label>
+                                    <Select
+                                        name="supplier_id"
+                                        onValueChange={(value) =>
+                                            setFormData({
+                                                ...formData,
+                                                supplier_id: String(value),
+                                            })
+                                        }
+                                        value={formData.supplier_id}
+                                    >
+                                        <SelectTrigger className="mt-1 block w-full">
+                                            <SelectValue placeholder="Select a Supplier" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {suppliers.map((supplier) => (
+                                                <SelectItem
+                                                    key={supplier.id}
+                                                    value={String(supplier.id)}
+                                                >
+                                                    {supplier.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError
+                                        message={errors.supplier_id}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
                             <div className="mt-4">
                                 <Label htmlFor="name">Description</Label>
@@ -455,8 +481,69 @@ export default function Index() {
                                 />
                             </div>
                             <div className="flex gap-4">
-                                <div className="mt-4">
-                                    <Label htmlFor="name">Purchase Price</Label>
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="unit">Unit</Label>
+                                    <Select
+                                        name="unit"
+                                        onValueChange={(value) =>
+                                            setFormData({
+                                                ...formData,
+                                                unit: value,
+                                            })
+                                        }
+                                        value={formData.unit}
+                                    >
+                                        <SelectTrigger className="mt-1 block w-full">
+                                            <SelectValue placeholder="Select Unit" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="pcs">
+                                                Pieces
+                                            </SelectItem>
+                                            <SelectItem value="kg">
+                                                Kilograms
+                                            </SelectItem>
+                                            <SelectItem value="liters">
+                                                Liters
+                                            </SelectItem>
+                                            <SelectItem value="box">
+                                                Box
+                                            </SelectItem>
+                                            <SelectItem value="pack">
+                                                Pack
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError
+                                        message={errors.unit}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="quantity">Quantity</Label>
+                                    <Input
+                                        name="quantity"
+                                        type="number"
+                                        className="mt-1 block w-full"
+                                        value={formData.quantity}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                quantity: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.quantity}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <div className="mt-4 w-full">
+                                    <Label htmlFor="purchase_price">
+                                        Purchase Price
+                                    </Label>
                                     <Input
                                         name="purchase_price"
                                         type="number"
@@ -474,7 +561,7 @@ export default function Index() {
                                         className="mt-2"
                                     />
                                 </div>
-                                <div className="mt-4">
+                                <div className="mt-4 w-full">
                                     <Label htmlFor="name">Selling Price</Label>
                                     <Input
                                         name="selling_price"
