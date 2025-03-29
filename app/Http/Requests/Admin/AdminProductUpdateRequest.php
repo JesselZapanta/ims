@@ -11,7 +11,7 @@ class AdminProductUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class AdminProductUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'supplier_id' => ['required', 'exists:suppliers,id'],
+            'description' => ['required', 'string'],
+            'unit' => ['required', 'string'],
+            'quantity' => ['required', 'integer'],
+            'purchase_price' => ['required', 'decimal:2'],
+            'selling_price' => ['required', 'decimal:2'],
+            'expiry_date' => ['required', 'date'],
+            'status' => ['required', 'integer', 'in:1,2,3'],
+            'image' => ['nullable', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

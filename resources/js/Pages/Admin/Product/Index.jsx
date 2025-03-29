@@ -141,11 +141,9 @@ export default function Index() {
         setProcessing(true);
         if (product) {
             try {
-                const res = await axios.put(
-                    `/admin/product/update/${product.id}`,
-                    formData
-                );
-
+                const res = await axios.post(`/admin/product/update/${product.id}`, formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
                 if (res.data.status === "updated") {
                     formCancel();
                     toast.success(
@@ -259,8 +257,11 @@ export default function Index() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>ID</TableHead>
+                                <TableHead>Image</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Category</TableHead>
+                                <TableHead>Quantity</TableHead>
+                                <TableHead>Unit</TableHead>
                                 <TableHead>Status</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -268,10 +269,17 @@ export default function Index() {
                             {loading ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={5}
+                                        colSpan={7}
                                         className="text-center"
                                     >
                                         <div className="flex flex-col gap-2">
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
+                                            <Skeleton className="h-11 w-full" />
                                             <Skeleton className="h-11 w-full" />
                                             <Skeleton className="h-11 w-full" />
                                             <Skeleton className="h-11 w-full" />
@@ -283,10 +291,22 @@ export default function Index() {
                                 data.data.map((product) => (
                                     <TableRow key={product.id}>
                                         <TableCell>{product.id}</TableCell>
+                                        <TableCell>
+                                            <div className="w-16">
+                                                <img
+                                                    src={`/storage/${product.image}`}
+                                                    alt={product.name}
+                                                />
+                                            </div>
+                                        </TableCell>
                                         <TableCell>{product.name}</TableCell>
                                         <TableCell>
                                             {product.category.name}
                                         </TableCell>
+                                        <TableCell>
+                                            {product.quantity}
+                                        </TableCell>
+                                        <TableCell>{product.unit}</TableCell>
                                         <TableCell>
                                             {product.status === 1 ? (
                                                 <div>In Stock</div>
@@ -407,7 +427,7 @@ export default function Index() {
                                                 category_id: String(value),
                                             })
                                         }
-                                        value={formData.category_id}
+                                        value={String(formData.category_id)}
                                     >
                                         <SelectTrigger className="mt-1 block w-full">
                                             <SelectValue placeholder="Select a Category" />
@@ -440,7 +460,7 @@ export default function Index() {
                                                 supplier_id: String(value),
                                             })
                                         }
-                                        value={formData.supplier_id}
+                                        value={String(formData.supplier_id)}
                                     >
                                         <SelectTrigger className="mt-1 block w-full">
                                             <SelectValue placeholder="Select a Supplier" />
@@ -611,7 +631,7 @@ export default function Index() {
                                                 status: value,
                                             })
                                         }
-                                        value={formData.status}
+                                        value={String(formData.status)}
                                     >
                                         <SelectTrigger className="mt-1 block w-full">
                                             <SelectValue placeholder="Select Status" />

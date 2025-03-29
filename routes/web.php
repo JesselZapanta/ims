@@ -43,6 +43,8 @@ Route::delete('/admin/category/destroy/{id}',[AdminCategoryController::class, 'd
 Route::get('/admin/product/index',[AdminProductController::class, 'index'])->name('admin.product');
 Route::get('/admin/product/getdata',[AdminProductController::class, 'getdata']);
 Route::post('/admin/product/store', [AdminProductController::class, 'store']);
+Route::post('/admin/product/update/{id}', [AdminProductController::class, 'update']);
+Route::delete('/admin/product/destroy/{id}',[AdminProductController::class, 'destroy']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
