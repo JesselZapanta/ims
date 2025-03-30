@@ -189,6 +189,7 @@ export default function Index() {
                     Category Management
                 </h2>
             }
+            breadcrumbs="Category Management"
         >
             <Head title="Category Management" />
             {/* <pre className="text-gray-900">

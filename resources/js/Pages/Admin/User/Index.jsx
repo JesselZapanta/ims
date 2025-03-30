@@ -192,6 +192,7 @@ export default function Index() {
                     User Management
                 </h2>
             }
+            breadcrumbs="User Management"
         >
             <Head title="User Management" />
             <div className="p-6 text-gray-900">

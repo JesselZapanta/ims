@@ -229,6 +229,7 @@ export default function Index() {
                     Product Management
                 </h2>
             }
+            breadcrumbs="Product Management"
         >
             {/* <pre className="text-gray-900">
                 {JSON.stringify(data.data, null, 2)}

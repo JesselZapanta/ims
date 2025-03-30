@@ -194,6 +194,7 @@ export default function Index() {
                     Supplier Management
                 </h2>
             }
+            breadcrumbs="Supplier Management"
         >
             <Head title="Supplier Management" />
             <div className="p-6 text-gray-900">

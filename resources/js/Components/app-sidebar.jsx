@@ -9,6 +9,7 @@ import {
     User,
     ArrowUpNarrowWide,
     ShoppingCart,
+    NotebookText,
 } from "lucide-react";
 
 import {
@@ -23,13 +24,6 @@ import {
     SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
-
-
-const user = {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/images/ims.png",
-};
 
 const items = [
     {
@@ -57,11 +51,17 @@ const items = [
         url: "/admin/product/index",
         icon: ShoppingCart,
     },
+    // {
+    //     title: "Invoice",
+    //     url: "/admin/invoice/index",
+    //     icon: NotebookText,
+    // },
 ];
 
 export function AppSidebar({ ...props }) {
+    const currentPath = window.location.pathname; // Get current route
     return (
-        <Sidebar {...props}>
+        <Sidebar>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -71,10 +71,8 @@ export function AppSidebar({ ...props }) {
                                     <GalleryVerticalEnd className="size-4" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
-                                    <span className="font-semibold">
-                                        Documentation
-                                    </span>
-                                    <span className="">v1.0.0</span>
+                                    <span className="font-semibold">IMS</span>
+                                    <span className="">Inventory MS</span>
                                 </div>
                             </a>
                         </SidebarMenuButton>
@@ -86,7 +84,10 @@ export function AppSidebar({ ...props }) {
                     <SidebarMenu>
                         {items.map((item) => (
                             <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild>
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={currentPath === item.url}
+                                >
                                     <a href={item.url}>
                                         <item.icon />
                                         <span>{item.title}</span>
@@ -98,7 +99,7 @@ export function AppSidebar({ ...props }) {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={user} />
+                <NavUser user={props.auth.user} />
             </SidebarFooter>
             <SidebarRail />
             <SidebarRail />
