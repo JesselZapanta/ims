@@ -75,8 +75,9 @@ export default function Index() {
             setData(res.data.products);
             setCategories(res.data.categories);
             setSuppliers(res.data.suppliers);
-            setPage(res.data.current_page);
-            setLastPage(res.data.last_page);
+            
+            setPage(res.data.products.current_page);
+            setLastPage(res.data.products.last_page);
         } catch (err) {
             console.log(err);
         } finally {
