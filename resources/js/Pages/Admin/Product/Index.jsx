@@ -45,7 +45,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/Components/ui/textarea";
 
-export default function Index() {
+export default function Index({auth}) {
     const [data, setData] = useState([]);
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
@@ -229,6 +229,7 @@ export default function Index() {
                     Product Management
                 </h2>
             }
+            auth={auth}
             breadcrumbs="Product Management"
         >
             {/* <pre className="text-gray-900">

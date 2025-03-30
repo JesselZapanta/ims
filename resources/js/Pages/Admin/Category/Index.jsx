@@ -38,7 +38,7 @@ import InputError from "@/Components/InputError";
 
 import { toast } from "sonner";
 
-export default function Index() {
+export default function Index({auth}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -189,6 +189,7 @@ export default function Index() {
                     Category Management
                 </h2>
             }
+            auth={auth}
             breadcrumbs="Category Management"
         >
             <Head title="Category Management" />

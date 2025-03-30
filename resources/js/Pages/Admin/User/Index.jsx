@@ -37,7 +37,7 @@ import InputError from "@/Components/InputError";
 
 import { toast } from "sonner";
 
-export default function Index() {
+export default function Index({auth}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -192,6 +192,7 @@ export default function Index() {
                     User Management
                 </h2>
             }
+            auth={auth}
             breadcrumbs="User Management"
         >
             <Head title="User Management" />
@@ -277,7 +278,10 @@ export default function Index() {
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan="4" className="py-12 text-center">
+                                    <TableCell
+                                        colSpan="4"
+                                        className="py-12 text-center"
+                                    >
                                         No data found
                                     </TableCell>
                                 </TableRow>

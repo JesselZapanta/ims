@@ -30,7 +30,7 @@ export default function AuthenticatedLayout({ auth, children, breadcrumbs }) {
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
                                     <BreadcrumbLink href="#">
-                                        {/* {auth.user.name} */}
+                                        IMS
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
