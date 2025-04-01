@@ -14,13 +14,13 @@ export default function Dashboard({ auth, users,suppliers, categories, products 
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
+                    Admin Dashboard
                 </h2>
             }
             auth={auth}
-            breadcrumbs="Dashboard"
+            breadcrumbs="Admin Dashboard"
         >
-            <Head title="Dashboard" />
+            <Head title="Admin Dashboard" />
 
             <div className="p-6 text-gray-900">
                 Admin Dashboard
