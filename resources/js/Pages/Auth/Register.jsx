@@ -36,15 +36,17 @@ export default function Register() {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
-            <div className="w-full max-w-sm md:max-w-3xl">
+            <div className="w-full max-w-sm md:max-w-4xl">
                 <Card className="overflow-hidden">
                     <CardContent className="grid p-0 md:grid-cols-2">
                         <div className="relative hidden bg-muted md:block">
-                            <img
-                                src="/images/ims.png"
-                                alt="Ims"
-                                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                            />
+                            <a href="/">
+                                <img
+                                    src="/images/ims.png"
+                                    alt="Ims"
+                                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                                />
+                            </a>
                         </div>
                         <form onSubmit={submit} className="p-6 md:p-8">
                             <div className="flex flex-col gap-6">
